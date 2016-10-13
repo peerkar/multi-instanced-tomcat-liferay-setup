@@ -1,0 +1,305 @@
+#!/bin/bash
+#
+# Description: Multi instanced Tomcat setup script for use with Liferay
+#
+# Petteri Karttunen,  2016-10-06
+#
+
+#
+# Check that this script is run by sufficient privileges
+#
+check_run_privileges() {
+
+	printf "Checking user: "
+
+	if ! [ $(id -u) = 0 ]; then
+	        printf "FAILED. Please run this script as root or sudo.\n"
+	        exit 1
+	fi
+
+	printf "OK\n"
+}
+
+#
+# Check environment
+#
+check_environment() {
+
+	printf "Starting configuration check.\n"
+
+	# Check if there's already an installation in the target
+
+	_check_existing_installation;
+
+	# Check Java installation and version
+
+	_check_java;
+}
+
+#
+# Check for existing installation
+#
+_check_existing_installation() {
+
+	printf  "Checking installation dir: "
+
+	if [ -d "$CATALINA_HOME" ]; then
+	        printf "FAILED. Tomcat dir $CATALINA_HOME exists already. Cannot continue."
+	        exit 1
+	fi
+
+	printf "OK\n"
+}
+
+#
+# Check Java installation dir and version
+#
+_check_java() {
+
+	printf "Checking Java installation dir and version: "
+
+	# Check dir
+
+        if [ ! -d  "$JAVA_HOME" ]; then
+                printf "FAILED. JAVA_HOME $JAVA_HOME doesn't exist. Cannot continue.\n"
+                exit 1
+        fi
+
+	# Check version
+
+	if [[ -x "$JAVA_HOME/bin/java" ]]; then
+		printf "Java binary found, "
+ 		java_binary="$JAVA_HOME/bin/java"
+	else
+		printf -e "FAILED. Java binary not found. Cannot continue."
+		exit 1
+	fi
+
+	java_version=$("$java_binary" -version 2>&1 | sed 's/java version "\(.*\)\.\(.*\)\..*"/\1\2/; 1q')
+	java_version_pretty=$("$java_binary" -version 2>&1 | awk -F '"' '/version/ {print $2}')
+
+	printf "Java version is $java_version_pretty, "
+
+	if [[ "$java_version" -lt 18 ]]; then
+		printf "FAILED. Java 8 or higher is required. Cannot continue."
+		exit 1
+	fi
+
+    printf "OK\n"
+}
+
+#
+# Create directory structure
+#
+create_directory_structure() {
+
+        printf "Creating directory structure.\n"
+
+        mkdir -p $BIN_DIR
+        mkdir -p $INSTANCES_DIR
+        mkdir -p $LIB_DIR
+        mkdir -p $DOWNLOAD_DIR
+        mkdir -p $RESOURCES_DIR
+        mkdir -p $TEMPLATES_DIR
+
+	_copy_resources;
+}
+
+#
+# Copy resources
+#
+_copy_resources() {
+
+        printf "Copying resources.\n"
+
+	cp -R resources/templates $RESOURCES_DIR/
+	cp -R resources/configuration $RESOURCES_DIR/
+	cp -R resources/bin $INSTALLATION_DIR/
+}
+
+#
+# Install files
+#
+install_tomcat() {
+
+	printf "Starting Tomcat install.\n"
+
+	# Create download dir
+
+	mkdir -p $DOWNLOAD_DIR
+
+	# Download file if defined
+
+	if [ -z "$TOMCAT_FILE" ] || [ ! -f "$TOMCAT_FILE" ]; then
+		TOMCAT_FILE=$(wget -P "$DOWNLOAD_DIR" --content-disposition "$TOMCAT_URL" 2>&1 | grep "Saving to: " | sed "s/Saving to: ‘\(.*\)’/\1/; 1q")
+		printf "Downloaded $TOMCAT_FILE.\n"
+	else
+		printf "Using local Tomcat file $TOMCAT_FILE.\n"
+	fi
+
+	# Resolve Tomcat extraction dir and install
+
+	tomcat_dir=$(unzip -qql $TOMCAT_FILE | sed -r '1 {s/([ ]+[^ ]+){3}\s+//;q}')
+
+	printf "Unzipping Tomcat to $INSTALLATION_DIR.\n"
+
+	unzip $TOMCAT_FILE -d $INSTALLATION_DIR
+
+	printf "Creating symbolic link $INSTALLATION_DIR/$tomcat_dir $CATALINA_HOME.\n"
+
+	ln -s $INSTALLATION_DIR/$tomcat_dir $CATALINA_HOME
+}
+
+#
+# Create directory structure for 
+#
+create_instance_template() {
+
+	printf "Creating template instance directory structure.\n"
+
+	# Create instance template directory structure
+
+	mkdir -p $BLANK_INSTANCE_TEMPLATE_DIR/bin
+	mkdir -p $BLANK_INSTANCE_TEMPLATE_DIR/lib
+	mkdir -p $BLANK_INSTANCE_TEMPLATE_DIR/logs
+	mkdir -p $BLANK_INSTANCE_TEMPLATE_DIR/temp
+	mkdir -p $BLANK_INSTANCE_TEMPLATE_DIR/work
+	mkdir -p $BLANK_INSTANCE_TEMPLATE_DIR/webapps
+
+	# Copy conf from the distribution
+
+	cp -R $CATALINA_HOME/conf $BLANK_INSTANCE_TEMPLATE_DIR/
+}
+
+#
+# Install common Liferay dependency libraries (usually not Liferay version specific)
+#
+install_common_liferay_dependencies() {
+
+	printf "Start installing Liferay dependencies ...\n"
+
+	_install_library_file "$ACTIVATION_JAR_FILE" "$ACTIVATION_JAR_URL";
+	_install_library_file "$CCPP_JAR_FILE" "$CCPP_JAR_URL";
+
+	_install_library_file "$JMS_JAR_FILE" "$JMS_JAR_URL";
+	_install_library_file "$JTA_JAR_FILE" "$JTA_JAR_URL";
+	_install_library_file "$JUTF7_JAR_FILE" "$JUTF7_JAR_URL";
+	_install_library_file "$MAIL_JAR_FILE" "$MAIL_JAR_URL";
+	_install_library_file "$MYSQL_JAR_FILE" "$MYSQL_JAR_URL";
+	_install_library_file "$PERSISTENCE_JAR_FILE" "$PERSISTENCE_JAR_URL";
+	_install_library_file "$POSTGRESQL_JAR_FILE" "$POSTGRESQL_JAR_URL";
+
+	# These come in dependencies war
+
+	#_install_library_file "$PORTLET_JAR_FILE" "$PORTLET_JAR_URL";
+	#_install_library_file "$HSQL_JAR_FILE" "$HSQL_JAR_URL";
+}
+
+#
+# Copy or download common a single library file to it's correct location
+#
+_install_library_file() {
+
+       if [ -z "$1" ] || [ ! -f "$1" ]; then
+                wget -P $LIB_DIR --content-disposition "$2"
+                printf  "Downloaded $2 to $LIB_DIR.\n"
+        else
+                printf "Copied $1 to $LIB_DIR.\n"
+        fi
+}
+
+#
+# Create Tomcat user
+#
+setup_tomcat_user() {
+
+	printf "Setting up Tomcat user and group\n"
+
+	# Create Tomcat user group if necessary
+
+	if [ ! $(getent group $TOMCAT_GROUP) ]; then
+		printf "Creating Tomcat group $TOMCAT_GROUP\n"
+		groupadd $TOMCAT_GROUP
+	else
+		printf "Tomcat group $TOMCAT_USER exists already\n"
+	fi
+
+	# Create Tomcat user if necessary
+
+	if [ $(id -u $TOMCAT_USER > /dev/null 2>&1; echo $?) != 0 ]; then
+		printf "Creating Tomcat user $TOMCAT_USER\n"
+		sudo useradd -g $TOMCAT_GROUP -r -m -d $TOMCAT_HOME_DIR -s /sbin/nologin $TOMCAT_USER
+	else
+		printf "Tomcat user $TOMCAT_USER exists already\n"
+	fi
+}
+
+setup_filesystem_rights() {
+
+	printf "Setting up filesystem rights\n"
+
+	chown -R $TOMCAT_USER:$TOMCAT_GROUP $INSTALLATION_DIR
+
+	# We shouldn't be using the "root" instance but set the rights anyways
+
+	_setup_tomcat_instance_filesystem_rights $CATALINA_HOME;
+
+	# Setup template instance's rights
+
+	_setup_tomcat_instance_filesystem_rights $BLANK_INSTANCE_TEMPLATE_DIR;
+}
+
+#
+# Setup Tomcat's file system rights
+#
+_setup_tomcat_instance_filesystem_rights() {
+
+	printf "Setting up Tomcat instance $1 filesystem rights\n"
+
+	# Users can not modify the configuration of tomcat
+
+	chmod -R g+r $1/conf
+
+        # Users can modify the other folders
+
+        chmod -R g+w $1/logs
+        chmod -R g+w $1/temp
+        chmod -R g+w $1/webapps
+        chmod -R g+w $1/work
+
+	# Execute rights
+
+	chmod -R 750 $1/bin
+}
+
+printf "\n##################################################################################\n"
+printf "#                                                                                #\n"
+printf "#    Tomcat installation script                                                  #\n"
+printf "#                                                                                #\n"
+printf "##################################################################################\n"
+
+cd "$(dirname "$0")"
+
+source resources/configuration/configuration.sh
+
+check_run_privileges;
+
+check_environment;
+
+create_directory_structure;
+
+install_tomcat;
+
+create_instance_template;
+
+install_common_liferay_dependencies;
+
+setup_tomcat_user;
+
+setup_filesystem_rights;
+
+printf "\nAll done succesfully!\n"
+
+printf "\nCreate a new Liferay instance by running script $BIN_DIR/create_instance.sh\n\n"
+
+exit 0
