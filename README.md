@@ -26,7 +26,7 @@ In this setup Tomcat installation remains fully untouched so it’s easy to upgr
 1. There is ready for use configuration for Liferay CE 7 GA3 but  you can make them more to the [\INSTALLATION_DIR\]/resources/configuration directory. The name of the directory serves as the name of the template for instance creation script.
 2. Create a new instances with [INSTALLATION_DIR]/bin/create-instance.sh. 
 
-You need to know free ports (shutdown, ajp, http, redirect) for your Tomcat instance here and MySQL credentials for creating new databases. Be sure that ports do not conflict with other instances or reservations by your system. Depending on the environment on possible and easy to remember numbering schema could be:
+You need to know free ports (shutdown, ajp, http, redirect) for your Tomcat instance here and MySQL credentials for creating new databases. Be sure that ports do not conflict with other instances or reservations by your system. Depending on the environment one possible and easy to remember numbering schema could be:
 
 * shutdown:         8000-
 * ajp-connector:   8010-
