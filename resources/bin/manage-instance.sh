@@ -3,18 +3,10 @@
 # Description: Tomcat instance management script. Thanks to https://web.liferay.com/web/brett.swaim/blog/-/blogs/sample-tomcat-startup-scripts
 #
 # Petteri Karttunen,  2016-09-08
+#
 
-#
-# ARGUMENTS
-#
-INSTANCE_NAME=$1
-CMD=$2
+# Time before forcing instance to shut down
 
-#
-# VARIABLES
-#
-CATALINA_BASE=$INSTANCES_DIR/$INSTANCE_NAME
-CATALINA_TMPDIR=$CATALINA_BASE/temp
 FORCE_SHUTDOWN_THRESHOLD=45
 
 #
@@ -26,6 +18,15 @@ check_run_credentials() {
 		printf "Please run this script as root or sudo.\n"
 		exit 1
 	fi
+}
+
+#
+# Set variables
+#
+set_variables() {
+
+	CATALINA_BASE=$INSTANCES_DIR/$INSTANCE_NAME
+	CATALINA_TMPDIR=$CATALINA_BASE/temp
 }
 
 #
@@ -126,15 +127,27 @@ status() {
 	fi
 }
 
-printf "\n##################################################################################"
-echo "#                                                                                #"
-echo "#    Welcome to Tomcat instance management script.                               #"
-echo "#                                                                                #"
-echo "#    Usage: manage-instance.sh 'instance-folder-name' start|stop|restart|status  #"
-echo "#                                                                                #"
+printf "\n##################################################################################\n"
+printf "#                                                                                #\n"
+printf "#    Welcome to Tomcat instance management script.                               #\n"
+printf "#                                                                                #\n"
+printf "#    Usage: manage-instance.sh 'instance-folder-name' start|stop|restart|status  #\n"
+printf "#                                                                                #\n"
 printf "##################################################################################\n"
 
+#
+# ARGUMENTS
+#
+INSTANCE_NAME=$1
+CMD=$2
+
+cd "$(dirname "$0")"
+
+source ../resources/configuration/configuration.sh
+
 check_run_credentials;
+
+set_variables;
 
 check_run_prequisites;
 
@@ -152,9 +165,8 @@ case $CMD in
 	status)
 		status;;
 	*)
-		printf "Unknown command '$CMD'. Please check the usage info.";;
-	esac
+		printf "Unknown command '$CMD'. Please check the usage info.\n";;
+esac
 
-printf "\n"
 exit 0
 

@@ -158,6 +158,7 @@ create_instance_template() {
 	printf "Creating template instance directory structure.\n"
 
 	# Create instance template directory structure
+	# Conf is copied when creating instances
 
 	mkdir -p $BLANK_INSTANCE_TEMPLATE_DIR/bin
 	mkdir -p $BLANK_INSTANCE_TEMPLATE_DIR/lib
@@ -165,10 +166,6 @@ create_instance_template() {
 	mkdir -p $BLANK_INSTANCE_TEMPLATE_DIR/temp
 	mkdir -p $BLANK_INSTANCE_TEMPLATE_DIR/work
 	mkdir -p $BLANK_INSTANCE_TEMPLATE_DIR/webapps
-
-	# Copy conf from the distribution
-
-	cp -R $CATALINA_HOME/conf $BLANK_INSTANCE_TEMPLATE_DIR/
 }
 
 #

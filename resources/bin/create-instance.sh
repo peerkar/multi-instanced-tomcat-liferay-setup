@@ -67,7 +67,8 @@ copy_template() {
 }
 
 copy_conf_directory() {
-	cp -R $TOMCAT_SYMLINK_DIR/conf $INSTANCE_DIR/
+
+	cp -R $CATALINA_HOME/conf $INSTANCE_DIR/
 
 	printf "Copied default conf directory to $INSTANCE_DIR.\n"
 
