@@ -55,6 +55,15 @@ You need to know free ports (shutdown, ajp, http, redirect) for your Tomcat inst
 * redirect:             8440
 
 This way numbering is easy to remember.
+
+### Creating a configuration for another Liferay version (like DXP)
+
+1. Copy the default liferay-ce-7-ga3 directory to the same location under different name
+2. Make configuration changes as needed
+
+After that you can use this configuration with create\_instance.sh -script. Notice that support-tomcat.jar in the default configurations folder is Liferay version specific.
+
+
 ### Start and stop instances
 Manage your instance (start|stop|restart) with \[INSTALLATION_DIR\]/bin/manage\_instance.sh
 
