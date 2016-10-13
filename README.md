@@ -18,12 +18,12 @@ In this setup Tomcat installation remains fully untouched so it’s easy to upgr
 ###Creating environment
 
 1. Clone the project
-2. Configure your environment in configuration/configuration.sh
+2. Configure your environment in resources/configuration/configuration.sh
 3. Run install_environment.sh
 
 ### Creating a new Tomcat instance
 
-1. There is ready for use configuration for Liferay CE 7 GA3 but  you can make them more to the [\INSTALLATION_DIR\]/resources/configuration directory. The name of the directory serves as the name of the template for instance creation script.
+1. There is ready for use configuration for Liferay CE 7 GA3 but  you can make them more to the \[INSTALLATION_DIR\]/resources/configuration directory. The name of the directory serves as the name of the template for instance creation script.
 2. Create a new instances with [INSTALLATION_DIR]/bin/create-instance.sh. 
 
 You need to know free ports (shutdown, ajp, http, redirect) for your Tomcat instance here and MySQL credentials for creating new databases. Be sure that ports do not conflict with other instances or reservations by your system. Depending on the environment one possible and easy to remember numbering schema could be:
