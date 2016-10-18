@@ -1,14 +1,14 @@
 # Multi Instanced Tomcat-Liferay Setup
 Script for creating a multi instance Tomcat environment and scripts for both creating and managing instances fast and easily on it.
 
-## Why? What is this setup Good for?
+## Why? What is this setup good for?
 This setup may be suitable if you are longing for Glassfish or JBoss “like” domain functionality for Tomcat, if you are going to run multiple independent Tomcat instances (like clustered Liferay, Solr, Elasticsearch etc.) in single server and want to simplify Tomcat administration and maintenance. This setup requires only one base installation of Tomcat and you still can run as many separate instances simultaneously as your server can handle. 
 
 In this setup Tomcat base installation is just a matter of unzipping the package. Additional common loader libraries and instances are in dedicated directories. This makes make upgrading Tomcat's version or testing with different versions as simple as possible.
 
 Scripts for creating and managing instances in this setup are made for Liferay using MySQL but you can create your instances manually as well or with minor modifications make the scripts generic or suitable for your own scenarios. An effort have been made to make the scripts readable and simple for customization purposes. 
 
-## Requirements / Reference Environment
+## Requirements / Reference environment
 
 * Ubuntu Linux 16.04 LTS (should work on versions 12 and 14 too)
 * Java 8 full JDK
