@@ -4,6 +4,22 @@
 #
 # Petteri Karttunen,  2016-10-06
 #
+
+#
+# Check that this script is run by sufficient privileges
+#
+check_run_privileges() {
+
+        printf "Checking user: "
+
+        if ! [ $(id -u) = 0 ]; then
+                printf "FAILED. Please run this script as root or sudo.\n"
+                exit 1
+        fi
+
+        printf "OK\n"
+}
+
 #
 # Read input from tty
 #
@@ -56,9 +72,6 @@ read_input() {
 	source $CONFIGURATION_DIR/configuration.sh
 }
 
-#
-# Check that this script is run by sufficient privileges
-#
 copy_template() {
 
 	cp -R $BLANK_INSTANCE_TEMPLATE_DIR $INSTANCE_DIR
@@ -278,6 +291,8 @@ printf "########################################################################
 cd "$(dirname "$0")"
 
 source ../resources/configuration/configuration.sh
+
+check_run_privileges;
 
 read_input;
 

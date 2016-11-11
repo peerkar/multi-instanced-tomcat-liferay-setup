@@ -23,6 +23,10 @@ TOMCAT_GROUP=portal
 #
 JAVA_HOME=/opt/jdk-current
 
+# Path where apt installs Oracle 8 Java by default
+
+ORACLE_JAVA_PATH=/usr/lib/jvm/java-8-oracle
+
 # Base installation dir. Everything goes inside this.
 
 INSTALLATION_DIR=/opt/tomcat
@@ -70,7 +74,7 @@ TOMCAT_HOME_DIR=/home/$TOMCAT_USER
 #
 
 TOMCAT_FILE=
-TOMCAT_URL=http://www-eu.apache.org/dist/tomcat/tomcat-8/v8.5.5/bin/apache-tomcat-8.5.5.zip
+TOMCAT_URL=http://www-eu.apache.org/dist/tomcat/tomcat-8/v8.5.8/bin/apache-tomcat-8.5.8.zip
 
 #
 # LIFERAY SHARED LIBRARIES

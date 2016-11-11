@@ -34,6 +34,36 @@ check_environment() {
 	# Check Java installation and version
 
 	_check_java;
+
+	# Check database
+
+	_check_db;
+}
+
+#
+# Check that we are on Ubuntu
+#
+_check_os_and_version() {
+
+	printf "Checking OS and version.\n"
+
+	if [ -f /etc/lsb-release ]; then
+
+		lsb_release -ri
+
+		os_version=$(lsb_release -rs 2>&1)
+
+		if [ "$os_version" = "16.04" ]; then
+			echo 'boi'
+		else
+			printf "This procedure is supported only on version 16.04 at the moment.\n"
+			exit 1
+		fi
+
+	else
+		printf "This is not an Ubuntu distribution. Cannot continue procedure.\n"
+		exit 1
+	fi
 }
 
 #
@@ -61,8 +91,17 @@ _check_java() {
 	# Check dir
 
         if [ ! -d  "$JAVA_HOME" ]; then
-                printf "FAILED. JAVA_HOME $JAVA_HOME doesn't exist. Cannot continue.\n"
-                exit 1
+
+                printf "FAILED. JAVA_HOME $JAVA_HOME doesn't exist.\n"
+
+		read -p "Do you want to install Oracle Java 8 now?: " -n 1 -r
+		printf "\n"
+		if [[ $REPLY =~ ^[Yy]$ ]]; then
+			_install_java;
+		else
+			echo "Cannot continue. Please install Java before continuing.\n"
+			exit 1
+		fi
         fi
 
 	# Check version
@@ -71,7 +110,7 @@ _check_java() {
 		printf "Java binary found, "
  		java_binary="$JAVA_HOME/bin/java"
 	else
-		printf -e "FAILED. Java binary not found. Cannot continue."
+		printf  "FAILED. Java binary not found. Cannot continue."
 		exit 1
 	fi
 
@@ -86,6 +125,63 @@ _check_java() {
 	fi
 
     printf "OK\n"
+}
+
+#
+# Install Java
+#
+_install_java() {
+
+	_check_os_and_version;
+
+        printf "Installing Java.\n"
+
+	add-apt-repository ppa:webupd8team/java
+	apt-get update
+	apt-get install oracle-java8-installer
+
+        printf "Creating symbolic link.\n"
+	ln -s $ORACLE_JAVA_PATH $JAVA_HOME
+
+	printf "OK\n"
+}
+
+#
+# Check DB
+#
+_check_db() {
+	_check_mysql;
+}
+
+#
+# Check MySQL
+#
+_check_mysql() {
+
+        if [ -x "$(command -v mysql)" ]; then
+
+                printf "MySQL seems to be installed.\n" 
+        else
+
+                printf "MySQL not found.\n"
+
+                read -p "Do you want to install MySQL server now?: " -n 1 -r
+                printf "\n"
+
+                if [[ $REPLY =~ ^[Yy]$ ]]; then
+                        _install_mysql_server;
+                else
+                        echo "Please install MySQL server manually before continuing.\n"
+                        exit 1
+                fi
+        fi
+}
+
+#
+# Instal MySQL server
+#
+_install_mysql_server() {
+	apt-get install mysql-server
 }
 
 #
@@ -112,7 +208,6 @@ _copy_resources() {
 
         printf "Copying resources.\n"
 
-	cp -R resources/templates $RESOURCES_DIR/
 	cp -R resources/configuration $RESOURCES_DIR/
 	cp -R resources/bin $INSTALLATION_DIR/
 }
@@ -128,10 +223,19 @@ install_tomcat() {
 
 	mkdir -p $DOWNLOAD_DIR
 
-	# Download file if defined
+	# Download Tomcat if defined
 
 	if [ -z "$TOMCAT_FILE" ] || [ ! -f "$TOMCAT_FILE" ]; then
+
 		TOMCAT_FILE=$(wget -P "$DOWNLOAD_DIR" --content-disposition "$TOMCAT_URL" 2>&1 | grep "Saving to: " | sed "s/Saving to: ‘\(.*\)’/\1/; 1q")
+
+		# Check if Download succeeded
+
+		if [ -z "$TOMCAT_FILE" ] || [ ! -f "$TOMCAT_FILE" ]; then
+			printf "Downloading failed. Check the download url in the resources/configuration/configuration.sh\n"
+			exit 1
+		fi
+
 		printf "Downloaded $TOMCAT_FILE.\n"
 	else
 		printf "Using local Tomcat file $TOMCAT_FILE.\n"
@@ -253,9 +357,11 @@ _setup_tomcat_instance_filesystem_rights() {
 
 	printf "Setting up Tomcat instance $1 filesystem rights\n"
 
-	# Users can not modify the configuration of tomcat
+	# Users can not modify the configuration of tomcat. Doesn't exist in the template.
 
-	chmod -R g+r $1/conf
+	if [ -d "$1/conf" ]; then
+		chmod -R g+r $1/conf
+	fi
 
         # Users can modify the other folders
 
