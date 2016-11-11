@@ -55,14 +55,6 @@ RESOURCES_DIR=$INSTALLATION_DIR/resources
 
 DOWNLOAD_DIR=$RESOURCES_DIR/download
 
-# Templates
-
-TEMPLATES_DIR=$RESOURCES_DIR/templates
-
-# Blank instance template
-
-BLANK_INSTANCE_TEMPLATE_DIR=$TEMPLATES_DIR/instance-template
-
 # Home directory for the portal user
 
 TOMCAT_HOME_DIR=/home/$TOMCAT_USER

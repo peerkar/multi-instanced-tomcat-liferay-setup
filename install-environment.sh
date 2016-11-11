@@ -196,7 +196,6 @@ create_directory_structure() {
         mkdir -p $LIB_DIR
         mkdir -p $DOWNLOAD_DIR
         mkdir -p $RESOURCES_DIR
-        mkdir -p $TEMPLATES_DIR
 
 	_copy_resources;
 }
@@ -252,24 +251,6 @@ install_tomcat() {
 	printf "Creating symbolic link $INSTALLATION_DIR/$tomcat_dir $CATALINA_HOME.\n"
 
 	ln -s $INSTALLATION_DIR/$tomcat_dir $CATALINA_HOME
-}
-
-#
-# Create directory structure for 
-#
-create_instance_template() {
-
-	printf "Creating template instance directory structure.\n"
-
-	# Create instance template directory structure
-	# Conf is copied when creating instances
-
-	mkdir -p $BLANK_INSTANCE_TEMPLATE_DIR/bin
-	mkdir -p $BLANK_INSTANCE_TEMPLATE_DIR/lib
-	mkdir -p $BLANK_INSTANCE_TEMPLATE_DIR/logs
-	mkdir -p $BLANK_INSTANCE_TEMPLATE_DIR/temp
-	mkdir -p $BLANK_INSTANCE_TEMPLATE_DIR/work
-	mkdir -p $BLANK_INSTANCE_TEMPLATE_DIR/webapps
 }
 
 #
@@ -344,10 +325,6 @@ setup_filesystem_rights() {
 	# We shouldn't be using the "root" instance but set the rights anyways
 
 	_setup_tomcat_instance_filesystem_rights $CATALINA_HOME;
-
-	# Setup template instance's rights
-
-	_setup_tomcat_instance_filesystem_rights $BLANK_INSTANCE_TEMPLATE_DIR;
 }
 
 #
@@ -357,7 +334,7 @@ _setup_tomcat_instance_filesystem_rights() {
 
 	printf "Setting up Tomcat instance $1 filesystem rights\n"
 
-	# Users can not modify the configuration of tomcat. Doesn't exist in the template.
+	# Users can not modify the configuration of tomcat.
 
 	if [ -d "$1/conf" ]; then
 		chmod -R g+r $1/conf
@@ -392,8 +369,6 @@ check_environment;
 create_directory_structure;
 
 install_tomcat;
-
-create_instance_template;
 
 install_common_liferay_dependencies;
 

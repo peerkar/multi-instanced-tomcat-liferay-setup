@@ -54,16 +54,20 @@ read_input() {
 	done
 
 	while [[ -z $MYSQL_PASSWORD ]]; do
-	    read -p "Password: " MYSQL_PASSWORD
+	    read -s -p "Password: " MYSQL_PASSWORD
 	done
+
+	printf "\n"
 
 	while [[ -z $DB_USERNAME ]]; do
 	    read -p "MySQL username for the new instance: " DB_USERNAME
 	done
 
 	while [[ -z $DB_PASSWORD ]]; do
-	    read -p "Password: " DB_PASSWORD
+	    read -s -p "Password: " DB_PASSWORD
 	done
+
+	printf "\n"
 
 	CONFIGURATION_DIR=$RESOURCES_DIR/configuration/$CONFIGURATION_NAME
 	INSTANCE_DIR=$INSTANCES_DIR/$INSTANCE_NAME
@@ -72,11 +76,16 @@ read_input() {
 	source $CONFIGURATION_DIR/configuration.sh
 }
 
-copy_template() {
+create_directory_structure() {
 
-	cp -R $BLANK_INSTANCE_TEMPLATE_DIR $INSTANCE_DIR
+        mkdir -p $INSTANCE_DIR/bin
+        mkdir -p $INSTANCE_DIR/lib
+        mkdir -p $INSTANCE_DIR/logs
+        mkdir -p $INSTANCE_DIR/temp
+        mkdir -p $INSTANCE_DIR/work
+        mkdir -p $INSTANCE_DIR/webapps
 
-        printf "Copied instance template to $INSTANCE_DIR.\n"
+        printf "Created instance directory structure.\n"
 }
 
 copy_conf_directory() {
@@ -296,7 +305,7 @@ check_run_privileges;
 
 read_input;
 
-copy_template;
+create_directory_structure;
 
 copy_conf_directory;
 
