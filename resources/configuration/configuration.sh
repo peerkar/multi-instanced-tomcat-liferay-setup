@@ -21,7 +21,7 @@ TOMCAT_GROUP=portal
 #
 # Note that a full Java 8 JDK is required and you have install / link by yourself
 #
-JAVA_HOME=/opt/jdk-current
+JAVA_HOME=/opt/tomcat/jdk-current
 
 # Path where apt installs Oracle 8 Java by default
 

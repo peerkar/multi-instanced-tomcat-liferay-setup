@@ -310,7 +310,7 @@ setup_tomcat_user() {
 
 	if [ $(id -u $TOMCAT_USER > /dev/null 2>&1; echo $?) != 0 ]; then
 		printf "Creating Tomcat user $TOMCAT_USER\n"
-		sudo useradd -g $TOMCAT_GROUP -r -m -d $TOMCAT_HOME_DIR -s /sbin/nologin $TOMCAT_USER
+		sudo useradd -g $TOMCAT_GROUP -r -m -d $TOMCAT_HOME_DIR -s /usr/sbin/nologin $TOMCAT_USER
 	else
 		printf "Tomcat user $TOMCAT_USER exists already\n"
 	fi

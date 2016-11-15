@@ -67,7 +67,7 @@ start() {
 		printf "Instance $INSTANCE_NAME seems to be running with PID $pid.\n"
 	else
 		printf "Starting instance $INSTANCE_NAME.\n"
-	        su - -c "export CATALINA_HOME=$CATALINA_HOME CATALINA_BASE=$CATALINA_BASE CATALINA_TMPDIR=$CATALINA_TMPDIR JAVA_HOME=$JAVA_HOME ; export PATH=$PATH:$JAVA_HOME/bin ; $CATALINA_HOME/bin/catalina.sh start" $TOMCAT_USER
+	        su - -s /bin/bash -c "export CATALINA_HOME=$CATALINA_HOME CATALINA_BASE=$CATALINA_BASE CATALINA_TMPDIR=$CATALINA_TMPDIR JAVA_HOME=$JAVA_HOME ; export PATH=$PATH:$JAVA_HOME/bin ; $CATALINA_HOME/bin/catalina.sh start" $TOMCAT_USER
 	fi
 }
 
@@ -82,7 +82,7 @@ stop() {
 
 		printf "Stopping instance $INSTANCE_NAME PID $pid.\n"
 
-	        su - -c "export CATALINA_HOME=$CATALINA_HOME CATALINA_BASE=$CATALINA_BASE CATALINA_TMPDIR=$CATALINA_TMPDIR JAVA_HOME=$JAVA_HOME ; export PATH=$PATH:$JAVA_HOME/bin ; $CATALINA_HOME/bin/catalina.sh stop" $TOMCAT_USER
+	        su - -s /bin/bash -c "export CATALINA_HOME=$CATALINA_HOME CATALINA_BASE=$CATALINA_BASE CATALINA_TMPDIR=$CATALINA_TMPDIR JAVA_HOME=$JAVA_HOME ; export PATH=$PATH:$JAVA_HOME/bin ; $CATALINA_HOME/bin/catalina.sh stop" $TOMCAT_USER
 
 		count=0
 

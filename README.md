@@ -6,6 +6,8 @@ This setup may be suitable if you are longing for Glassfish or JBoss “like” 
 
 In this setup Tomcat base installation remains intact and additional common loader libraries and instances are in dedicated directories. This makes make upgrading Tomcat's version or testing with different versions as simple as possible.
 
+Setup is using JDK through symbolic linked jdk-current directory to ease switching between the JDK's if necessary.
+
 Scripts for creating and managing instances in this setup are made for Liferay using MySQL but you can create your instances manually as well or with minor modifications make the scripts generic or suitable for your own scenarios. An effort have been made to make the scripts readable and simple for customization purposes. 
 
 ## Requirements / Reference environment
@@ -26,6 +28,7 @@ The resulting directory structure (in the target directory (default /opt/tomcat)
     │   ├── create-instance.sh [The script for creating instances]  
     │   └── manage-instance.sh [The script for starting and stopping instances]
     ├── instances [Instances live here]
+    ├── jdk-current [Symbolic link to the JDK]
     ├── lib [Liferay's shared libs (usually in tomcat-xxx/lib/ext)]  
     ├── resources
     │   ├── configuration
