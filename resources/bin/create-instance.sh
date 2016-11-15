@@ -292,6 +292,18 @@ set_folder_rights() {
         printf "Set up folder rights.\n"
 }
 
+#
+# Check if there is a post install script and run it .
+#
+run_post_install_tasks() {
+
+        if [ -z "$POST_INSTALL_SCRIPT" ] || [ ! -f "$POST_INSTALL_SCRIPT" ]; then
+                printf  "No post install tasks to run..\n"
+        else
+                printf "Running post install script.\n"
+		source $POST_INSTALL_SCRIPT
+        fi
+}
 
 printf "\n##################################################################################\n"
 printf "#                                                                                #\n"
@@ -337,7 +349,9 @@ install_tomcat_support_dependency;
 
 install_portal_ext;
 
-set_folder_rights
+set_folder_rights;
+
+run_post_install_tasks;
 
 printf "\nAll done succesfully!\n"
 
