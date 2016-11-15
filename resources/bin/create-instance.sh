@@ -240,7 +240,9 @@ install_osgi_dependencies() {
 
 	unzip $LIFERAY_OSGI_DEPENDENCIES_FILE -d $LIFERAY_HOME
 
-	mv $LIFERAY_HOME/$folder_name $LIFERAY_HOME/osgi
+	mv $LIFERAY_HOME/$folder_name/osgi $LIFERAY_HOME/osgi
+
+	rm -r $LIFERAY_HOME/$folder_name
 
 	printf "Extracted OSGI dependencies to $LIFERAY_HOME.\n"
 }
