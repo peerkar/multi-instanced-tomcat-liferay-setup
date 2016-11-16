@@ -1,12 +1,12 @@
 # Multi Instanced Tomcat-Liferay Setup
-Script for creating a multi instance Tomcat environment and scripts for both creating and managing instances fast and easily on it.
+Script for creating a multi instance Tomcat environment and scripts for both creating and managing instances fast and easily on it. 
 
 ## Why? What is this setup good for?
 This setup may be suitable if you are longing for Glassfish or JBoss “like” domain functionality for Tomcat, if you are going to run multiple independent Tomcat instances (like clustered Liferay, Solr etc.) in single server and want to simplify Tomcat administration and maintenance. This setup requires only one base installation of Tomcat and you still can run as many separate instances simultaneously as your server can handle. 
 
-In this setup Tomcat base installation remains intact and additional common loader libraries and instances are in dedicated directories. This makes make upgrading Tomcat's version or testing with different versions as simple as possible.
+Tomcat base installation remains in this setup intac. Additional common loader libraries and instances are in dedicated directories. This makes make upgrading Tomcat's version or testing with different versions as simple as possible.
 
-Setup is using JDK through symbolic linked jdk-current directory to ease switching between the JDK's if necessary.
+Setup is using JDK through symbolic linked jdk-current directory to ease switching between the JDK's if necessary. You can also manually define a certain JDK for certain instance.
 
 Scripts for creating and managing instances in this setup are made for Liferay using MySQL but you can create your instances manually as well or with minor modifications make the scripts generic or suitable for your own scenarios. An effort have been made to make the scripts readable and simple for customization purposes. 
 
@@ -15,6 +15,14 @@ Scripts for creating and managing instances in this setup are made for Liferay u
 * Ubuntu Linux 16.04 LTS
 
 ## Usage instructions
+
+There are three scripts in this package:
+
+* **install_environment.sh:** creates the Tomcat environment, sets up MySQl and Java
+* **create_instance.sh:** creates a new Tomcat instance based on custom definable templates
+* **manage_instance.sh:** starts and stops instances
+
+
 ###Creating environment
 
 1. Clone the project
