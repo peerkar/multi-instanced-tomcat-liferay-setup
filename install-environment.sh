@@ -17,7 +17,7 @@ check_run_privileges() {
 	        exit 1
 	fi
 
-	printf "OK\n"
+	printf "Ok.\n"
 }
 
 #
@@ -53,9 +53,7 @@ _check_os_and_version() {
 
 		os_version=$(lsb_release -rs 2>&1)
 
-		if [ "$os_version" = "16.04" ]; then
-			echo 'boi'
-		else
+		if [ ! "$os_version" = "16.04" ]; then
 			printf "This procedure is supported only on version 16.04 at the moment.\n"
 			exit 1
 		fi
@@ -78,7 +76,7 @@ _check_existing_installation() {
 	        exit 1
 	fi
 
-	printf "OK\n"
+	printf "OK.\n"
 }
 
 #
@@ -88,30 +86,23 @@ _check_java() {
 
 	printf "Checking Java installation dir and version: "
 
-	# Check dir
+	# Check JDK path
 
-        if [ ! -d  "$JAVA_HOME" ]; then
+	if [ ! -d "$JDK_PATH" ]; then
 
-                printf "FAILED. JAVA_HOME $JAVA_HOME doesn't exist.\n"
-
-		read -p "Do you want to install Oracle Java 8 now?: " -n 1 -r
-		printf "\n"
-		if [[ $REPLY =~ ^[Yy]$ ]]; then
-			_install_java;
-		else
-			echo "Cannot continue. Please install Java before continuing.\n"
-			exit 1
-		fi
-        fi
+		printf "JDK not found in path $JDK_PATH. Please check the JDK_PATH in the configuration file.\n"
+		exit 1
+	fi
 
 	# Check version
 
-	if [[ -x "$JAVA_HOME/bin/java" ]]; then
+        if [ -x "$(command -v java)" ]; then
+
 		printf "Java binary found, "
- 		java_binary="$JAVA_HOME/bin/java"
 	else
-		printf  "FAILED. Java binary not found. Cannot continue."
-		exit 1
+		printf  "Java binary not found.\n"
+
+		_install_java;
 	fi
 
 	java_version=$("$java_binary" -version 2>&1 | sed 's/java version "\(.*\)\.\(.*\)\..*"/\1\2/; 1q')
@@ -120,11 +111,11 @@ _check_java() {
 	printf "Java version is $java_version_pretty, "
 
 	if [[ "$java_version" -lt 18 ]]; then
-		printf "FAILED. Java 8 or higher is required. Cannot continue."
-		exit 1
-	fi
 
-    printf "OK\n"
+		printf "Java 8 or higher is required.\n"
+
+		_install_java;
+	fi
 }
 
 #
@@ -134,16 +125,21 @@ _install_java() {
 
 	_check_os_and_version;
 
-        printf "Installing Java.\n"
+	read -p "Do you want to setup Oracle Java 8 now?: " -n 1 -r
+        printf "\n"
 
-	add-apt-repository ppa:webupd8team/java
-	apt-get update
-	apt-get install oracle-java8-installer
+	if [[ $REPLY =~ ^[Yy]$ ]]; then
 
-        printf "Creating symbolic link.\n"
-	ln -s $ORACLE_JAVA_PATH $JAVA_HOME
+		printf "Installing Java.\n"
 
-	printf "OK\n"
+		add-apt-repository ppa:webupd8team/java
+		apt-get update
+		apt-get install oracle-java8-installer
+
+	else
+		printf "Cannot continue. Please install Java manually before continuing.\n"
+		exit 1
+	fi
 }
 
 #
@@ -196,6 +192,15 @@ create_directory_structure() {
         mkdir -p $LIB_DIR
         mkdir -p $DOWNLOAD_DIR
         mkdir -p $RESOURCES_DIR
+
+        # Create symbolic link for the JDK. This is this path this setup is using even if there were multiple JDKs. 
+
+        if [ ! -d  "$JAVA_HOME" ]; then
+
+                printf "Linking $JDK_PATH to $JAVA_HOME.\n"
+
+                ln -s $JDK_PATH $JAVA_HOME
+        fi
 
 	_copy_resources;
 }
