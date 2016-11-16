@@ -98,7 +98,7 @@ _check_java() {
 
         if [[ -x "$JDK_PATH/bin/java" ]]; then
                 printf "Java binary found, "
-                java_binary="$JAVA_HOME/bin/java"
+                java_binary="$JDK_PATH/bin/java"
         else
 		printf  "Java binary not found.\n"
 
