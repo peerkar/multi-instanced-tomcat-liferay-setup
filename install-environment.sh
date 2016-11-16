@@ -94,16 +94,16 @@ _check_java() {
 		exit 1
 	fi
 
-	# Check version
+        # Check version
 
-        if [ -x "$(command -v java)" ]; then
-
-		printf "Java binary found, "
-	else
+        if [[ -x "$JDK_PATH/bin/java" ]]; then
+                printf "Java binary found, "
+                java_binary="$JAVA_HOME/bin/java"
+        else
 		printf  "Java binary not found.\n"
 
 		_install_java;
-	fi
+        fi
 
 	java_version=$("$java_binary" -version 2>&1 | sed 's/java version "\(.*\)\.\(.*\)\..*"/\1\2/; 1q')
 	java_version_pretty=$("$java_binary" -version 2>&1 | awk -F '"' '/version/ {print $2}')
