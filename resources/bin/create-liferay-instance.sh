@@ -232,7 +232,7 @@ install_osgi_dependencies() {
         if [ -z "$LIFERAY_OSGI_DEPENDENCIES_FILE" ] || [ ! -f "$LIFERAY_OSGI_DEPENDENCIES_FILE" ]; then
                 printf "Downloading OSGI dependencies.\n"
 
-	        if [ -z "$LIFERAY_OSGI_DEPENDENCIES_DOWNLOAD_URL" ] || [ ! -f "LIFERAY_OSGI_DEPENDENCIES_DOWNLOAD_URL" ]; then
+	        if [ -z "$LIFERAY_OSGI_DEPENDENCIES_DOWNLOAD_URL" ] || [ ! -f "$LIFERAY_OSGI_DEPENDENCIES_DOWNLOAD_URL" ]; then
         	        printf "No download url defined. Bypassing OSGI deps.\n"
 			return 1
 		fi
