@@ -26,7 +26,7 @@ There are three scripts in this package:
 
 1. Clone the project
 2. Modify configuration if necessary (resources/configuration/configuration.sh)
-3. Run install_environment.sh
+3. Run install-environment.sh
 
 The resulting directory structure (in the target directory (default /opt/tomcat)) should look like this:
 
@@ -50,7 +50,7 @@ The resulting directory structure (in the target directory (default /opt/tomcat)
 ### Creating a new Tomcat instance
 
 1. Check the configuration files (paths, jvm memory etc.) in the provided template directory or create a new instance template if needed. There is configuration templage for Liferay CE 7 GA3 in this package and you can make more configurations to the \[INSTALLATION_DIR\]/resources/configuration directory (see instructions below). The name of the directory serves as the name of the template for instance creation script.
-2. Create a new instances with [INSTALLATION_DIR]/bin/create-instance.sh \[TEMPLATE_DIR_NAME\]. 
+2. Create a new instances with [INSTALLATION_DIR]/bin/create-liferay-instance.sh \[TEMPLATE_DIR_NAME\]. 
 
 For this script you need to know free ports (shutdown, ajp, http, redirect) for the new Tomcat instance and MySQL credentials for creating new databases. Be sure that ports do not conflict with other instances or reservations by your system. Depending on the environment one possible and easy to remember numbering schema could be:
 
@@ -80,4 +80,5 @@ Where my\_instance\_directory is the name of the directory under [INSTALLATION_D
 * There is no instance delete script. You can remove the instance by simply removing the directory under  [INSTALLATION_DIR]/instances
 
 **Improvement suggestions welcome!**
+
 
