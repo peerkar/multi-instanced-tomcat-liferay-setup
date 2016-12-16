@@ -225,12 +225,18 @@ install_dependencies() {
 }
 
 #
-# Install portal OSGI dependencies
+# Install portal OSGI dependencies. Bypass installing if not defined in the configuration.
 #
 install_osgi_dependencies() {
 
         if [ -z "$LIFERAY_OSGI_DEPENDENCIES_FILE" ] || [ ! -f "$LIFERAY_OSGI_DEPENDENCIES_FILE" ]; then
                 printf "Downloading OSGI dependencies.\n"
+
+	        if [ -z "$LIFERAY_OSGI_DEPENDENCIES_DOWNLOAD_URL" ] || [ ! -f "LIFERAY_OSGI_DEPENDENCIES_DOWNLOAD_URL" ]; then
+        	        printf "No download url defined. Bypassing OSGI deps.\n"
+			return 1
+		fi
+
                 LIFERAY_OSGI_DEPENDENCIES_FILE=$(wget -P "$DOWNLOAD_DIR" --content-disposition "$LIFERAY_OSGI_DEPENDENCIES_DOWNLOAD_URL" 2>&1 | grep "Saving to: " | sed "s/Saving to: ‘\(.*\)’/\1/; 1q")
         else
                 printf "Using local OSGI depencies file.\n"
@@ -355,6 +361,6 @@ run_post_install_tasks;
 
 printf "\nAll done succesfully!\n"
 
-printf "\nYou can manage the new instance with $BIN_DIR/manage_instance.sh $INSTANCE_NAME start|stop|restart\n\n"
+printf "\nYou can manage the new instance with $BIN_DIR/manage-instance.sh $INSTANCE_NAME start|stop|restart\n\n"
 
 exit 0

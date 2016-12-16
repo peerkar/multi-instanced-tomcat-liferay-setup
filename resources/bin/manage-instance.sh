@@ -1,6 +1,7 @@
 #!/bin/bash
 #
-# Description: Tomcat instance management script. Thanks to https://web.liferay.com/web/brett.swaim/blog/-/blogs/sample-tomcat-startup-scripts
+# Description: Tomcat instance management script. 
+# Thanks to Brett: https://web.liferay.com/web/brett.swaim/blog/-/blogs/sample-tomcat-startup-scripts
 #
 # Petteri Karttunen,  2016-09-08
 #

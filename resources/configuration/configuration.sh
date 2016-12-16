@@ -1,10 +1,10 @@
 #!/bin/sh
 
-#############################
+###################################
 #
-# BASE CONFIGURATION
+# BASE CONFIGURATION FOR THIS SETUP
 #
-#############################
+###################################
 
 #
 # TOMCAT RUN CREDENTIALS
@@ -71,7 +71,7 @@ TOMCAT_URL=http://www-eu.apache.org/dist/tomcat/tomcat-8/v8.5.8/bin/apache-tomca
 #
 # LIFERAY SHARED LIBRARIES
 #
-# The versions used are the ones from 7.0 GA3 package (except JMS)
+# Note: The versions used are the ones from 7.0 GA3 package (except JMS)
 #
 # https://dev.liferay.com/discover/deployment/-/knowledge_base/7-0/installing-liferay-on-tomcat-8
 #

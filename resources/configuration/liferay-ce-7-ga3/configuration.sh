@@ -14,11 +14,13 @@ LIFERAY_PORTAL_WAR_DOWNLOAD_URL="http://downloads.sourceforge.net/project/lporta
 LIFERAY_DEPENDENCIES_FILE=
 LIFERAY_DEPENDENCIES_DOWNLOAD_URL="http://downloads.sourceforge.net/project/lportal/Liferay%20Portal/7.0.2%20GA3/liferay-ce-portal-dependencies-7.0-ga3-20160804222206210.zip"
 
+# Leave both empty if do not want to install OSGI dependencies (for example if you are installing previous Liferay versions...)
+
 LIFERAY_OSGI_DEPENDENCIES_FILE=
 LIFERAY_OSGI_DEPENDENCIES_DOWNLOAD_URL="http://downloads.sourceforge.net/project/lportal/Liferay%20Portal/7.0.2%20GA3/liferay-ce-portal-osgi-7.0-ga3-20160804222206210.zip"
 
 TOMCAT_SUPPORT_JAR_FILE=$CONFIGURATION_DIR/support-tomcat.jar
 TOMCAT_SUPPORT_JAR_DOWNLOAD_URL=
 
-POST_INSTALL_SCRIPT=$CONFIGURATION_DIR/post_install.sh
+POST_INSTALL_SCRIPT=$CONFIGURATION_DIR/post-install.sh
 
