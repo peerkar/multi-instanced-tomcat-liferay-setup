@@ -4,7 +4,7 @@ Script for creating a multi instance Tomcat environment and scripts for both cre
 ## Why? What is this setup good for?
 This setup may be suitable if you are longing for Glassfish or JBoss “like” domain functionality for Tomcat, if you are going to run multiple independent Tomcat instances (like clustered Liferay, Solr etc.) in single server and want to simplify Tomcat administration and maintenance. This setup requires only one base installation of Tomcat and you still can run as many separate instances simultaneously as your server can handle. 
 
-Tomcat base installation remains in this setup intac. Additional common loader libraries and instances are in dedicated directories. This makes make upgrading Tomcat's version or testing with different versions as simple as possible.
+Tomcat base installation remains in this setup intact. Additional common loader libraries and instances are in dedicated directories. This makes make upgrading Tomcat's version or testing with different versions as simple as possible.
 
 Setup is using JDK through symbolic linked jdk-current directory to ease switching between the JDK's if necessary. You can also manually define a certain JDK for certain instance.
 
@@ -33,16 +33,16 @@ The resulting directory structure (in the target directory (default /opt/tomcat)
 
     ├── apache-tomcat-8.5.5 [Uncustomized Tomcat installation]
     ├── bin
-    │   ├── create-instance.sh [The script for creating instances]  
-    │   └── manage-instance.sh [The script for starting and stopping instances]
-    ├── instances [Instances live here]
-    ├── jdk-current [Symbolic link to the JDK]
-    ├── lib [Liferay's shared libs (usually in tomcat-xxx/lib/ext)]  
+    │   ├── create-instance.sh [Script for creating instances]  
+    │   └── manage-instance.sh [Script for starting and stopping instances]
+    ├── instances [Instances root dir]
+    ├── jdk-current [Symbolic link to the default JDK]
+    ├── lib [Liferay's shared libs]  
     ├── resources
     │   ├── configuration
-    │   │   ├── configuration.sh [Main configuration file]
-    │   │   ├── liferay-ce-7-ga3 [Configuration for creating Liferay CE 7 GA3 instances]
-    │   ├── download [Downloads go here]
+    │   │   ├── configuration.sh [Configuration file for the scripts]
+    │   │   ├── liferay-ce-7-ga3 [Template configuration Liferay CE 7 GA3 instance]
+    │   ├── download [Files dowloaded by the scripts go here]
     └── tomcat-current -> /opt/tomcat/apache-tomcat-8.5.5/ [Symbolic link which is referenced as Catalina Home from the instances.]
 
 
