@@ -42,8 +42,8 @@ The resulting directory structure (in the target directory (default /opt/tomcat)
     │   ├── configuration
     │   │   ├── configuration.sh [Configuration file for the scripts]
     │   │   ├── liferay-ce-7-ga3 [Template configuration Liferay CE 7 GA3 instance]
-    │   ├── download [Files dowloaded by the scripts go here]
-    └── tomcat-current -> /opt/tomcat/apache-tomcat-8.5.5/ [Symbolic link which is referenced as Catalina Home from the instances.]
+    │   ├── download [Files downloaded by the scripts]
+    └── tomcat-current -> /opt/tomcat/apache-tomcat-8.5.5/ [Symlink referenced as Catalina Home by instances]
 
 
 
