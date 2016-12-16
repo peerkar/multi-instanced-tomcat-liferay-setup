@@ -1,5 +1,5 @@
 # Multi Instanced Tomcat - Liferay Setup
-Scripts for creating a multi instance Tomcat environment and scripts for both creating and managing Liferay instances fast and easily on it. Configuration template for Liferay 7 CE GA3 is provided.
+Scripts for creating a multi instance Tomcat environment and scripts for both creating and managing instances for Liferay fast and easily on it. Configuration template for Liferay 7 CE GA3 is provided.
 ## Why? What is this setup good for?
 The original motivation for this project was to create an easy to setup and templatable environment for Liferay. But it may be suitable for generic purposes if you are just longing for Glassfish or JBoss “like” domain functionality for Tomcat, if you are going to run multiple independent Tomcat instances (like clustered Liferay, Liferay + Solr etc.) in single server and want to simplify Tomcat administration and maintenance. This setup requires only one base installation of Tomcat and you still can run as many separate instances simultaneously as your server can handle. 
 
@@ -18,8 +18,8 @@ Tested in Ubuntu Linux 16.04 LTS environment.
 There are three scripts in this package:
 
 * **install-environment.sh:** creates Tomcat environment, sets up MySQL and Java
-* **create\-liferay-instance.sh:** creates a new Liferay instance based on custom definable templates
-* **manage-instance.sh:** starts and stops instances
+* **create\-liferay-instance.sh:** creates a new Tomcat Liferay instance based on custom definable templates
+* **manage-instance.sh:** starts and stops Tomcat instances
 
 
 ###Creating environment
