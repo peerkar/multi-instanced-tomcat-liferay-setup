@@ -49,7 +49,7 @@ The resulting directory structure (in the target directory (default /opt/tomcat)
 
 ### Creating a new Tomcat instance
 
-1. Create an instance template if needed. There is configuration templage for Liferay CE 7 GA3 in this package and you can make more configurations to the \[INSTALLATION_DIR\]/resources/configuration directory (see instructions below). The name of the directory serves as the name of the template for instance creation script.
+1. Check the configuration files (paths, jvm memory etc.) in the provided template directory or create a new instance template if needed. There is configuration templage for Liferay CE 7 GA3 in this package and you can make more configurations to the \[INSTALLATION_DIR\]/resources/configuration directory (see instructions below). The name of the directory serves as the name of the template for instance creation script.
 2. Create a new instances with [INSTALLATION_DIR]/bin/create-instance.sh \[TEMPLATE_DIR_NAME\]. 
 
 For this script you need to know free ports (shutdown, ajp, http, redirect) for the new Tomcat instance and MySQL credentials for creating new databases. Be sure that ports do not conflict with other instances or reservations by your system. Depending on the environment one possible and easy to remember numbering schema could be:
