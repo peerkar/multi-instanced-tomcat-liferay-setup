@@ -25,8 +25,8 @@ JAVA_HOME=/opt/tomcat/jdk-current
 
 # Path to the JDK (this is where apt installs Oracle 8 Java by default).
 
-JDK_PATH=/opt/jdk1.8.0_102
-#JDK_PATH=/usr/lib/jvm/java-8-oracle
+#JDK_PATH=/opt/jdk1.8.0_102
+JDK_PATH=/usr/lib/jvm/java-8-oracle
 
 # Base installation dir. Everything goes inside this.
 
