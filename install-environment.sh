@@ -90,8 +90,9 @@ _check_java() {
 
 	if [ ! -d "$JDK_PATH" ]; then
 
-		printf "JDK not found in path $JDK_PATH. Please check the JDK_PATH in the configuration file.\n"
-		exit 1
+		printf "JDK not found in path $JDK_PATH.\n"
+
+		_install_java;
 	fi
 
         # Check version
