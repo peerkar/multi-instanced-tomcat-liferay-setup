@@ -66,7 +66,7 @@ TOMCAT_HOME_DIR=/home/$TOMCAT_USER
 #
 
 TOMCAT_FILE=
-TOMCAT_URL=http://www-eu.apache.org/dist/tomcat/tomcat-8/v8.5.8/bin/apache-tomcat-8.5.8.zip
+TOMCAT_URL=http://www.nic.funet.fi/pub/mirrors/apache.org/tomcat/tomcat-8/v8.5.9/bin/apache-tomcat-8.5.9.zip
 
 #
 # LIFERAY SHARED LIBRARIES
